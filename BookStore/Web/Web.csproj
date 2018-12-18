@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Css\Themes\ui-lightness\jquery-ui-1.8.2.custom.css" />
     <Content Include="Images\06default_1018_28.gif" />
     <Content Include="Images\06default_1018_85.gif" />
     <Content Include="Images\06default_1018_93.gif" />
@@ -1095,11 +1096,18 @@
     <Content Include="Images\集团网站1.jpg" />
     <Content Include="Images\页面不存在.jpg" />
     <Content Include="js\jquery-1.7.1.js" />
+    <Content Include="js\jquery-ui-1.8.2.custom.min.js" />
+    <Content Include="Member\CutPhoto.aspx" />
     <Content Include="Member\Register.aspx" />
     <Content Include="ShowMsg.aspx" />
+    <Content Include="SWFUpload\handlers.js" />
+    <Content Include="SWFUpload\swfupload.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ashx\Upload.ashx.cs">
+      <DependentUpon>Upload.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ashx\ValidateReg.ashx.cs">
       <DependentUpon>ValidateReg.ashx</DependentUpon>
     </Compile>
@@ -1110,6 +1118,13 @@
     </Compile>
     <Compile Include="Master\MainMaster.Master.designer.cs">
       <DependentUpon>MainMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Member\CutPhoto.aspx.cs">
+      <DependentUpon>CutPhoto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Member\CutPhoto.aspx.designer.cs">
+      <DependentUpon>CutPhoto.aspx</DependentUpon>
     </Compile>
     <Compile Include="Member\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>
@@ -1132,6 +1147,7 @@
     <Content Include="Images\BookCovers\9787560925110jpg" />
     <Content Include="ashx\ValidateCode.ashx" />
     <Content Include="ashx\ValidateReg.ashx" />
+    <Content Include="ashx\Upload.ashx" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1142,6 +1158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\inc\" />
+    <Folder Include="ImageUpload\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">

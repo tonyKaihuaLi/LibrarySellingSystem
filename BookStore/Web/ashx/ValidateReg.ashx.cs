@@ -7,7 +7,7 @@ using BLL;
 namespace Web.ashx
 {
     /// <summary>
-    /// ValidateReg 的摘要说明
+    /// ValidateReg 的摘要说明 
     /// </summary>
     public class ValidateReg : IHttpHandler, System.Web.SessionState.IRequiresSessionState
     {
