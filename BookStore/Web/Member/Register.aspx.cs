@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using BLL;
 using Model;
 //using BookStore.Model;
 using Web.Enum;
@@ -16,29 +17,29 @@ namespace Web.Member
         {
             if (IsPostBack)
             {
-                if (CheckSession())
+                if (Common.WebCommon.CheckValidateCode(Request["txtCode"]))
                 {
                     AddUserInfo();
                 }
             }
         }
 
-        protected bool CheckSession()
-        {
-            bool isSuccess = false;
-            if (Session["vCode"] != null)
-            {
-                string txtCode = Request["txtCode"];
-                string sysCode = Session["vCode"].ToString();
-                if (sysCode.Equals(txtCode, StringComparison.InvariantCulture))
-                {
-                    isSuccess = true;
-                    Session["vCode"] = null;
-                }
-            }
+        //protected bool CheckSession()
+        //{
+        //    bool isSuccess = false;
+        //    if (Session["vCode"] != null)
+        //    {
+        //        string txtCode = Request["txtCode"];
+        //        string sysCode = Session["vCode"].ToString();
+        //        if (sysCode.Equals(txtCode, StringComparison.InvariantCulture))
+        //        {
+        //            isSuccess = true;
+        //            Session["vCode"] = null;
+        //        }
+        //    }
 
-            return isSuccess;
-        }
+        //    return isSuccess;
+        //}
 
         protected void AddUserInfo()
         {
@@ -51,7 +52,19 @@ namespace Web.Member
             userInfo.Phone = Request["txtPhone"];
             userInfo.UserState.Id = Convert.ToInt32(UserStateEnum.NormalState);
             
-
+            BLL.UserManager userManager=new UserManager();
+            string msg = string.Empty;
+            if (userManager.Add(userInfo, out msg) > 0)
+            {
+                Session["userInfo"] = userInfo;
+                Response.Redirect("/Default.aspx");
+            }
+            else
+            {
+                Response.Redirect("/ShowMsg.aspx?msg="+msg+"$txt=firstPage"+"@url=/Default.aspx");
+            }
+            
+        
         }
     }
 }
