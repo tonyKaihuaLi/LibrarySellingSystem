@@ -6,9 +6,9 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
-    <link href="../Css/themes/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+    <%--<link href="../Css/themes/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />--%>
        <script src="../js/jquery-1.7.1.js"></script>
-    <script src="../js/jquery-ui-1.8.2.custom.min.js"></script>
+    <%--<script src="../js/jquery-ui-1.8.2.custom.min.js"></script>--%>
     <script src="../SWFUpload/swfupload.js"></script>
     <script src="../SWFUpload/handlers.js"></script>
       <script type="text/javascript">
@@ -62,19 +62,42 @@
             });
         }
         //上传成功以后调用该方法
-        function showImage(file, serverData) {
+          function showImage(file, serverData)
+          {
             // $("#showPhoto").attr("src", serverData);
             var data = serverData.split(':');
             //将上传成功的图片作为DIV的背景
-            $("#hiddenImageUrl").val(data[0]);//将上传成功的图片路径存储到隐藏域中。
-            $("#divContent").css("backgroundImage", "url('" + data[0] + "')").css("width",data[1]+"px").css("height",data[2]+"px");
-        }
+            //$("#hiddenImageUrl").val(data[0]);//将上传成功的图片路径存储到隐藏域中。
+            //$("#divContent").css("backgroundImage", "url('" + data[0] + "')").css("width",data[1]+"px").css("height",data[2]+"px");
+            $("#selectbanner").attr("src", data[0]);
+            $('#selectbanner').imgAreaSelect({
+                selectionColor: 'blue', x1: 0, y1: 0, x2: 100,
+                y2: 100,selectionOpacity: 0.2, onSelectEnd: preview
+            });
+          }
+
+          function preview(img, selection)
+          {
+
+              $('#selectbanner').data('x', selection.x1);
+
+              $('#selectbanner').data('y', selection.y1);
+
+              $('#selectbanner').data('w', selection.width);
+
+              $('#selectbanner').data('h', selection.height);
+
+          }
+
+
+
+
 
         $(function () {
             //让DIV可以移动与拖动大小
-            $("#divCut").draggable({ containment: "#divContent", scroll: false }).resizable({
-                containment: "#divContent"
-            });
+            //$("#divCut").draggable({ containment: "#divContent", scroll: false }).resizable({
+            //    containment: "#divContent"
+            //});
             $("#btnCut").click(function () {
                 cutPhoto();
             });
@@ -82,17 +105,20 @@
           //截取头像
         function cutPhoto() {
             //计算要截取的头像的范围。
-            var y = $("#divCut").offset().top - $("#divContent").offset().top;//纵坐标
-            var x = $("#divCut").offset().left - $("#divContent").offset().left;
-            var width = $("#divCut").width();
-            var heigth = $("#divCut").height();
+            //var y = $("#divCut").offset().top - $("#divContent").offset().top;//纵坐标
+            //var x = $("#divCut").offset().left - $("#divContent").offset().left;
+            //var width = $("#divCut").width();
+            //var heigth = $("#divCut").height();
             var pars = {
-                "x": x,
-                "y": y,
-                "width": width,
-                "height": heigth,
+                "x": $('#selectbanner').data('x'),
+
+                "y": $('#selectbanner').data('y'),
+
+                "width": $('#selectbanner').data('w'),
+
+                "height": $('#selectbanner').data('h'),
                 "action": "cut",
-                "imgSrc": $("#hiddenImageUrl").val()
+                "imgSrc": $("#selectbanner").attr("src")
                 
             };
             $.post("/ashx/upload.ashx", pars, function (data) {
@@ -112,14 +138,16 @@
 		    </div>
 		    <div id="divFileProgressContainer" style="height: 75px;"></div>
 		    <div id="thumbnails"></div>
-            <div id="divContent" style="width:300px; height:300px;">
+<%--            <div id="divContent" style="width:300px; height:300px;">
                 <div id="divCut" style="width:100px;height:100px; border:solid red 1px">
                 </div>
 
-            </div>
+            </div>--%>
             <input type="button" value="截取图片" id="btnCut" />
             <input type="hidden" id="hiddenImageUrl" />
-            <img id="showPhoto"></img>
+	        
+            <img id="selectbanner"/>
+	        <img id="showPhoto"/>
 	    </div>
 		</div>
     </form>

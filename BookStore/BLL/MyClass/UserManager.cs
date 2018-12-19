@@ -34,6 +34,35 @@ namespace BLL
             return dal.CheckUserMail(mail) > 0 ? true : false;
         }
 
+        public bool CheckUserInfo(string userName, string userPwd, out string msg, out Model.User user)
+        {
+            user = dal.GetModel(userName);
+            if (user != null)
+            {
+                if (user.LoginPwd == userPwd)
+                {
+                    msg = "Success";
+                    return true;
+                }
+                else
+                {
+                    msg = "wrong";
+                    return false;
+                }
+            
+            }
+            else
+            {
+                msg = "wrong";
+                return false;
+            }
+        }
+
+        public Model.User GetModel(string userName)
+        {
+            return dal.GetModel(userName);
+        }
+
 
     }
 }
