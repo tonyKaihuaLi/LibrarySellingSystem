@@ -54,7 +54,7 @@ namespace Web.Member
                 Response.Cookies["cp1"].Expires=DateTime.Now.AddDays(-1);
                 Response.Cookies["cp2"].Expires=DateTime.Now.AddDays(-1);
 
-            }
+            } 
         }
 
         private void UserLogin()

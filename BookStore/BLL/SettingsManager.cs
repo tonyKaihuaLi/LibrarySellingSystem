@@ -2,32 +2,18 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-
-using DAL;
+using Common;
 
 namespace BLL
 {
-    public partial class UserManager
+    public class SettingsManager
     {
-
-        UserStateServices userStateServices = new UserStateServices();
-        private readonly DAL.UserServices dal = new DAL.UserServices();
-        public UserManager()
+        private readonly DAL.SettingSerive dal = new DAL.SettingSerive();
+        public SettingsManager()
         { }
         #region  成员方法
-
-        /// <summary>
-        /// 得到最大ID
-        /// </summary>
-        public int GetMaxId()
-        {
-            return dal.GetMaxId();
-        }
-
         /// <summary>
         /// 是否存在该记录
         /// </summary>
@@ -36,23 +22,18 @@ namespace BLL
             return dal.Exists(Id);
         }
 
-
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public int Add(Model.User model)
+        public int Add(Model.Settings model)
         {
-
             return dal.Add(model);
-
         }
-
-
 
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public void Update(Model.User model)
+        public void Update(Model.Settings model)
         {
             dal.Update(model);
         }
@@ -69,21 +50,19 @@ namespace BLL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public Model.User GetModel(int Id)
+        public Model.Settings GetModel(int Id)
         {
 
             return dal.GetModel(Id);
         }
 
-
-
         /// <summary>
         /// 得到一个对象实体，从缓存中。
         /// </summary>
-        public Model.User GetModelByCache(int Id)
+        public Model.Settings GetModelByCache(int Id)
         {
-            
-            string CacheKey = "UsersModel-" + Id;
+
+            string CacheKey = "SettingsModel-" + Id;
             object objModel = LTP.Common.DataCache.GetCache(CacheKey);
             if (objModel == null)
             {
@@ -98,7 +77,7 @@ namespace BLL
                 }
                 catch { }
             }
-            return (Model.User)objModel;
+            return (Model.Settings)objModel;
         }
 
         /// <summary>
@@ -118,7 +97,7 @@ namespace BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<Model.User> GetModelList(string strWhere)
+        public List<Model.Settings> GetModelList(string strWhere)
         {
             DataSet ds = dal.GetList(strWhere);
             return DataTableToList(ds.Tables[0]);
@@ -126,33 +105,22 @@ namespace BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<Model.User> DataTableToList(DataTable dt)
+        public List<Model.Settings> DataTableToList(DataTable dt)
         {
-            List<Model.User> modelList = new List<Model.User>();
+            List<Model.Settings> modelList = new List<Model.Settings>();
             int rowsCount = dt.Rows.Count;
             if (rowsCount > 0)
             {
-                Model.User model;
+                Model.Settings model;
                 for (int n = 0; n < rowsCount; n++)
                 {
-                    model = new Model.User();
+                    model = new Model.Settings();
                     if (dt.Rows[n]["Id"].ToString() != "")
                     {
                         model.Id = int.Parse(dt.Rows[n]["Id"].ToString());
                     }
-                    model.LoginId = dt.Rows[n]["LoginId"].ToString();
-                    model.LoginPwd = dt.Rows[n]["LoginPwd"].ToString();
                     model.Name = dt.Rows[n]["Name"].ToString();
-                    model.Address = dt.Rows[n]["Address"].ToString();
-                    model.Phone = dt.Rows[n]["Phone"].ToString();
-                    model.Mail = dt.Rows[n]["Mail"].ToString();
-
-                    if (dt.Rows[n]["UserStateId"].ToString() != "")
-                    {
-                        int UserStateId = int.Parse(dt.Rows[n]["UserStateId"].ToString());
-                        model.UserState = userStateServices.GetModel(UserStateId);
-                    }
-
+                    model.Value = dt.Rows[n]["Value"].ToString();
                     modelList.Add(model);
                 }
             }
@@ -167,28 +135,25 @@ namespace BLL
             return GetList("");
         }
 
+        public string GetValue(string key)
+        {
+            //判断缓存中是否有数据
+            if (CacheHelper.Get("setting_" + key) == null)
+            {
+                string value = dal.GetModel(key).Value;
+                CacheHelper.Set("setting_" + key, value);
+                return value;
+
+            }
+            else
+            {
+                return CacheHelper.Get("setting_" + key).ToString();
+            }
+
+
+        }
 
 
         #endregion  成员方法
-
-        public void FindUserPwd(Model.User userInfo)
-        {
-            BLL.SettingsManager settingsManager=new SettingsManager();
-
-            string newPwd = Guid.NewGuid().ToString().Substring(0, 8);
-            userInfo.LoginPwd = newPwd;
-            dal.Update(userInfo);
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From= new MailAddress(settingsManager.GetValue("系统邮件SMTP"));
-            mailMessage.To.Add(new MailAddress(userInfo.Mail));
-            mailMessage.Subject = "Forget Password";
-            StringBuilder stringBuilder=new StringBuilder();
-            stringBuilder.Append("UserName is " + userInfo.LoginId);
-            stringBuilder.Append("Your new password is: " + newPwd);
-            mailMessage.Body = stringBuilder.ToString();
-            SmtpClient client= new SmtpClient("smtp.126.com");
-            client.Credentials=new NetworkCredential(settingsManager.GetValue("系统邮件用户名"), settingsManager.GetValue("系统邮件密码"));
-            client.Send(mailMessage);
-        }
     }
 }
