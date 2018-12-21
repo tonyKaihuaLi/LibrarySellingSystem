@@ -40,5 +40,16 @@ namespace Web.Member
         {
             return str.Length > length ? str.Substring(0, length) + "......" : str;
         }
+
+        public string GetString(object obj)
+        {
+            DateTime time = Convert.ToDateTime(obj);
+            return "/";
+        }
+
+        protected void BookListRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+        }
     }
 }

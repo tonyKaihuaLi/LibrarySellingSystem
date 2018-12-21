@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using DAL;
 using Model;
 
@@ -200,6 +202,21 @@ namespace BLL
             int end = pageIndex * pageSize;
             DataSet ds = dal.GetPageList(start, end);
             return DataTableToList(ds.Tables[0]);
+        }
+
+        public void CreatHtmlPage(int id)
+        {
+            Book model = dal.GetModel(id);
+            string template = HttpContext.Current.Request.MapPath("/Template/BookTemplate.html");
+            string fileContent = File.ReadAllText(template);
+            fileContent = fileContent.Replace("$title", model.Author).Replace("$author", model.Author)
+                .Replace("$unitprice", model.UnitPrice.ToString("0.00")).Replace("$isbn", model.ISBN)
+                .Replace("$content", model.ContentDescription).Replace("b$bookId", model.Id.ToString());
+            string dir = "/HtmlPage/" + model.PublishDate.Year + "/" + model.PublishDate.Month + "/" +
+                         model.PublishDate.Day + "/";
+            Directory.CreateDirectory(Path.GetDirectoryName(HttpContext.Current.Request.MapPath(dir)));
+            string fullDir = dir +model.Id+".html";
+            File.WriteAllText(HttpContext.Current.Request.MapPath(fullDir),fileContent,System.Text.Encoding.UTF8);
         }
     }
 }

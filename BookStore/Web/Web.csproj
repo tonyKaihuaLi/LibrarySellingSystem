@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminManager\CreateStaticPage.aspx" />
     <Content Include="Css\border-anim-h.gif" />
     <Content Include="Css\border-anim-v.gif" />
     <Content Include="Css\border-h.gif" />
@@ -75,6 +76,7 @@
     <Content Include="Css\pageBarStyle.css" />
     <Content Include="Css\Themes\ui-lightness\jquery-ui-1.8.2.custom.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="Images\06default_1018_28.gif" />
     <Content Include="Images\06default_1018_85.gif" />
     <Content Include="Images\06default_1018_93.gif" />
@@ -1112,9 +1114,20 @@
     <Content Include="ShowMsg.aspx" />
     <Content Include="SWFUpload\handlers.js" />
     <Content Include="SWFUpload\swfupload.js" />
+    <Content Include="Template\BookTemplate.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminManager\CreateStaticPage.aspx.cs">
+      <DependentUpon>CreateStaticPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminManager\CreateStaticPage.aspx.designer.cs">
+      <DependentUpon>CreateStaticPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ashx\BookComment.ashx.cs">
+      <DependentUpon>BookComment.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ashx\FindPwd.ashx.cs">
       <DependentUpon>FindPwd.ashx</DependentUpon>
     </Compile>
@@ -1132,6 +1145,9 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Enum\UserStateEnum.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Master\MainMaster.Master.cs">
       <DependentUpon>MainMaster.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1182,6 +1198,13 @@
     <Compile Include="ShowMsg.aspx.designer.cs">
       <DependentUpon>ShowMsg.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Template\BookTemplate.aspx.cs">
+      <DependentUpon>BookTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Template\BookTemplate.aspx.designer.cs">
+      <DependentUpon>BookTemplate.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Master\MainMaster.Master" />
@@ -1190,6 +1213,7 @@
     <Content Include="ashx\ValidateReg.ashx" />
     <Content Include="ashx\Upload.ashx" />
     <Content Include="ashx\FindPwd.ashx" />
+    <Content Include="ashx\BookComment.ashx" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1199,6 +1223,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="HtmlPage\" />
     <Folder Include="Images\inc\" />
     <Folder Include="ImageUpload\" />
   </ItemGroup>

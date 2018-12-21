@@ -272,9 +272,9 @@ namespace DAL
         {
             string sql = "select * from(select *,row_number()over(order by id) as num from Books) as t where t.num>=@start and t.num<=@end";
             SqlParameter[] parameters = {
-                    new SqlParameter("@start", SqlDbType.Int,4),
-                    new SqlParameter("@end", SqlDbType.Int,4)
-                                        };
+                new SqlParameter("@start", SqlDbType.Int,4),
+                new SqlParameter("@end", SqlDbType.Int,4)
+            };
             parameters[0].Value = start;
             parameters[1].Value = end;
             return DbHelperSQL.Query(sql, parameters);
