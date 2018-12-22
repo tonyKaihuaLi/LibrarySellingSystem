@@ -12,12 +12,27 @@
             ("#btnAdd").click(function() {
                 addComment();
             });
+            loadComment();
         });
+
+        function loadComment() {
+
+            $.post("/ashx/BookComment.ashx",
+                { "action": "load", "bookId": $bookId },
+                function(data) {
+                    var serverData = $.parseJSON(data);
+                    var serverDataLength = serverData.length;
+                    for (var i = 0; i < serverDataLength;i++) {
+                        $("<li>" + serverData[i].CreateDateTime +":"+serverData[i].Msg + "<li>").appendTo("#commentList ");
+                    }
+                });
+
+        }
 
         function addComment() {
             var msg = ("#txtContent").val();
             if (msg != "") {
-                $.post("/ashx/BookComment.ashx", { "msg": msg, "bookId":$bookId }, function(data) {
+                $.post("/ashx/BookComment.ashx", { "action":"add", "msg": msg, "bookId":$bookId }, function(data) {
                     if (data == "OK") {
                         $("txtContent").val("");
                         $("#txtContent").focus();
@@ -46,6 +61,9 @@
         <tr><td>Cover</td><td><img src="/Images/BookCovers/$isbn.jpg"/></td></tr>
         <tr><td>Introduction</td><td>$content</td></tr>
     </table>
+<ul id="commentList">
+
+</ul>
 <textarea id="txtContent" rows="20" cols="100"></textarea>
 <input type="button" value="Send" id="btnAdd"/>
 
