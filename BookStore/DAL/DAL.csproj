@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BookCommentService.cs" />
     <Compile Include="BookServices.cs" />
+    <Compile Include="CartServices.cs" />
     <Compile Include="CategoryServices.cs" />
     <Compile Include="CommandInfo.cs" />
     <Compile Include="DbHelperSQL.cs" />

@@ -6,8 +6,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
 using DAL;
+using Model;
 
 namespace BLL
 {
@@ -189,6 +190,38 @@ namespace BLL
             SmtpClient client= new SmtpClient("smtp.126.com");
             client.Credentials=new NetworkCredential(settingsManager.GetValue("系统邮件用户名"), settingsManager.GetValue("系统邮件密码"));
             client.Send(mailMessage);
+        }
+
+        public bool validateUserLogin()
+        {
+            var current = HttpContext.Current;
+            if (current.Session["userInfo"] != null)
+            {
+                return true;
+            }
+            else
+            {
+                if (current.Request.Cookies["cp1"] != null && current.Request.Cookies["cp2"] != null)
+                {
+                    string userName = current.Request.Cookies["cp1"].Value;
+                    string userPwd = current.Request.Cookies["cp2"].Value;
+                    User userInfo = GetModel(userName);
+                    if (userInfo != null)
+                    {
+                        if (userPwd == Common.WebCommon.GetMd5String(userInfo.LoginPwd))
+                        {
+                            current.Session["userInfo"] = userInfo;
+                            return true;
+                        }
+                    }
+
+                    current.Response.Cookies["cp1"].Expires = DateTime.Now.AddDays(-1);
+                    current.Response.Cookies["cp2"].Expires = DateTime.Now.AddDays(-1);
+                    return false;
+                }
+
+                return false;
+            }
         }
     }
 }
