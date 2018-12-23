@@ -1,6 +1,104 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/MainMaster.Master" AutoEventWireup="true" CodeBehind="ShoppingCart.aspx.cs" Inherits="Web.ShoppingCart" %>
 <%@ Import Namespace="Model" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="server">
+    <script type="text/javascript">
+        $(function() {
+            getTotalPrice();
+        })
+        function changeBar(operator, cartId, bookId) {
+            var count = $("#txtCount" + bookId).val();
+            if (operator == "-") {
+
+                count = parseInt(count);
+                count--;
+                if (count < 1) {
+                    alert("");
+                    return false;
+                }
+
+            } else if (operator == "+") {
+                count++;
+                if (count > 1000) {
+                    alert("");
+                    return false;
+                }
+
+            } else {
+                alert("");
+            }
+            $.post("/ashx/EditCart.ashx",
+                { "count": count,"cartId":cartId },
+                function(data) {
+                    if (data == "ok") {
+                        $("#txtCount" + bookId).val(count);
+
+
+                    } else {
+                        alert("wrong");
+                    }
+                });
+        }
+
+        function getTotalPrice() {
+            var totalPrice = 0;
+            $(".align_Center:gt(0)").each(function() {
+                var price = $(this).find(".price").text();
+                var count = $(this).find("input").val();
+                totalPrice = totalPrice + (parseFloat(price) * parseInt(count));
+            });
+            $("#tMoney").text(fmoney(totalPrice,2));
+        }
+
+        function removeProductOnShopppingCart (cartId,control){
+            if (confirm("sure?")) {
+                $.post("/ashx/EditCart.ashx", { "action": "delete", "cartId": cartId }, function(data) {
+                    if (data == "ok") {
+                        $(control).parent().parent().remove();
+                        getTotalPrice();
+                    }
+                });
+            }
+        }
+
+        function changeTextOnBlur(cardID, control) {
+            var count = $(control).val();
+            var reg = /^\d+$/;
+            if (reg.test(count)) {
+
+            } else {
+                showDialog("商品数量只能是数字");
+                $(control).val($("#pCount").val());
+            }
+
+        }
+
+        function fmoney(s, n) {
+            n = n > 0 && n <= 20 ? n : 2;
+            s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";//更改这里n数也可确定要保留的小数位  
+            var l = s.split(".")[0].split("").reverse(),
+                r = s.split(".")[1];
+            t = "";
+            for (i = 0; i < l.length; i++) {
+                t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+            }
+            return t.split("").reverse().join("") + "." + r.substring(0, 2);//保留2位小数  如果要改动 把substring 最后一位数改动就可  
+        }
+
+        function showDialog(msg) {
+            $("#errorMsg").text(msg);
+            $("#showResult").css("display", "block");
+            $("#showResult").dialog({
+                height: 240,
+                modal: true,
+                buttons: {
+                    Ok: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+    </script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>

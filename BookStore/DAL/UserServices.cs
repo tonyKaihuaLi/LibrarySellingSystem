@@ -12,8 +12,7 @@ namespace DAL
     {
 
         UserStateServices userStateServices = new UserStateServices();
-        public UserServices()
-        { }
+
         #region  成员方法
 
         /// <summary>
