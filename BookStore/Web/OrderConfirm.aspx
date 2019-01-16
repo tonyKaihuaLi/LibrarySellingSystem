@@ -38,6 +38,11 @@
             );
         }
     </script>
+    <style type="text/css">
+        .auto-style1 {
+            width: 198px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div style="border:solid 4px #aacded;width:710px" >
@@ -49,15 +54,15 @@
               <tbody>
                 <tr>
                   <td style="WIDTH: 100px" align="right">姓名：</td>
-                  <td style="text-align:left"><input type="text" name="txtName" size="50" value="<%=currUser.Name %>" /><img  src="images/cha.ico" style="display:none"  width="15" height="15" /></td>
+                  <td style="text-align:left"><input type="text" name="txtName" size="50" /><img  src="images/cha.ico" style="display:none"  width="15" height="15" /></td>
                 </tr>
                 <tr>
                               <td  align="right">地址：</td>
-                  <td style="text-align:left"><input type="text" name="txtAddress" size="50" value="<%=currUser.Address %>" /><img  src="images/cha.ico" style="display:none"  width="15" height="15" /> </td>
+                  <td style="text-align:left"><input type="text" name="txtAddress" size="50" /><img  src="images/cha.ico" style="display:none"  width="15" height="15" /> </td>
                 </tr>
                 <tr>
                                <td  align="right">电话：</td>
-                  <td style="text-align:left"><input type="text" name="txtPhone" size="50" value="<%=currUser.Phone %>" /><img  src="images/cha.ico" style="display:none"  width="15" height="15" /></td>
+                  <td style="text-align:left"><input type="text" name="txtPhone" size="50" /><img  src="images/cha.ico" style="display:none"  width="15" height="15" /></td>
                 </tr>
                 <tr>
                                  <td  align="right">邮编：</td>
@@ -73,8 +78,8 @@
             <table style="WIDTH: 100%" datasrc="">
               <tbody>
                 <tr valign="middle">
-                  <td style="TEXT-ALIGN: right; WIDTH: 80px">支付方式：</td>
-                  <td style="vertical-align:middle; text-align:left ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="" src="Images/y_zfb.gif" /><input name="zfPay" type="radio" value="zfb" checked="checked" />
+                  <td style="TEXT-ALIGN: right; " class="auto-style1">支付方式：</td>
+                  <td style="vertical-align:middle; text-align:left "><img alt="" src="Images/y_zfb.gif" /><input name="zfPay" type="radio" value="zfb" checked="checked" />
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img 
                           alt="" src="Images/unionpay.gif" /><input name="zfPay" 
                           type="radio" value="wyzx"  /></td>
